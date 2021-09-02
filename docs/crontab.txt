@@ -1,0 +1,381 @@
+﻿#客户合同到期提醒
+01 11 * * * /usr/sbin/php /data/api/MdkAdmin/yii base/check-guest-contract >/dev/null 2>&1
+
+#刷新第三方客户token
+02 00 * * * /usr/sbin/php /data/api/MdkAdmin/yii base/refresh-token >/dev/null 2>&1
+
+#拉取第三方客户广告账户
+00,15,30,45 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad/get-out-ad >/dev/null 2>&1
+
+#拉取广告主账户
+07,17,27,37,47,57 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad/get-ad >/dev/null 2>&1
+
+#统计客户下所有账号的总余额、昨日日终余额、总账户数、在投账户数
+11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii guest-info/sum >/dev/null 2>&1
+
+#账户日消耗记录拉取
+06,16 09 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day-expend/get-ad-expend >/dev/null 2>&1
+
+#视频排期需求推送
+00 17 * * 2 /usr/sbin/php /data/api/MdkAdmin/yii base/push-video-director >/dev/null 2>&1
+30 17 * * 2 /usr/sbin/php /data/api/MdkAdmin/yii base/push-video-director >/dev/null 2>&1
+
+#拉取广告主日数据
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 1 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 2 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 3 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 4 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 5 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 6 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 7 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 8 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 9 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 10 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 11 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 12 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 13 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 14 >/dev/null 2>&1
+02,22,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 15 >/dev/null 2>&1
+12,32,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 16 >/dev/null 2>&1
+12,32,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-day/get-ad-day-data 17 >/dev/null 2>&1
+
+#拉取/刷新广告计划
+01,16,31,46 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 1 >/dev/null 2>&1
+02,17,32,47 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 2 >/dev/null 2>&1
+03,18,33,48 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 3 >/dev/null 2>&1
+04,19,34,49 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 4 >/dev/null 2>&1
+05,20,35,50 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 5 >/dev/null 2>&1
+06,21,36,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 6 >/dev/null 2>&1
+07,22,37,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 7 >/dev/null 2>&1
+08,23,38,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 8 >/dev/null 2>&1
+09,24,39,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 9 >/dev/null 2>&1
+10,25,40,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan/get-ad-plan 10 >/dev/null 2>&1
+
+#获取计划投放日数据
+#每页跑150个账号
+
+01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 1 >/dev/null 2>&1
+01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 2 >/dev/null 2>&1
+01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 3 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 4 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 5 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 6 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-day/get-ad-plan-day 7 >/dev/null 2>&1
+
+
+#获取计划投放时数据
+03,13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 1 >/dev/null 2>&1
+03,13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 2 >/dev/null 2>&1
+03,13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 3 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 4 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 5 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 6 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-plan-hour/get-ad-plan-hour 7 >/dev/null 2>&1
+
+
+#获取广告主分时数据
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hour-data/get-ad-hour-data 1 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hour-data/get-ad-hour-data 2 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hour-data/get-ad-hour-data 3 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hour-data/get-ad-hour-data 4 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hour-data/get-ad-hour-data 5 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hour-data/get-ad-hour-data 6 >/dev/null 2>&1
+
+#受众报表数据-性别
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-gender-day/get-ad-gender-day-data 1 >/dev/null 2>&1
+12 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-gender-day/get-ad-gender-day-data 2 >/dev/null 2>&1
+13 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-gender-day/get-ad-gender-day-data 3 >/dev/null 2>&1
+14 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-gender-day/get-ad-gender-day-data 4 >/dev/null 2>&1
+15 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-gender-day/get-ad-gender-day-data 5 >/dev/null 2>&1
+16 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-gender-day/get-ad-gender-day-data 6 >/dev/null 2>&1
+
+#年龄
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-age-day/get-ad-age-day-data 1 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-age-day/get-ad-age-day-data 2 >/dev/null 2>&1
+12 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-age-day/get-ad-age-day-data 3 >/dev/null 2>&1
+13 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-age-day/get-ad-age-day-data 4 >/dev/null 2>&1
+14 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-age-day/get-ad-age-day-data 5 >/dev/null 2>&1
+15 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-age-day/get-ad-age-day-data 6 >/dev/null 2>&1
+
+#平台
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 1 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 2 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 3 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 4 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 5 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 6 >/dev/null 2>&1
+11 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-platform-day/get-ad-platform-day-data 7 >/dev/null 2>&1
+
+#兴趣
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 1 >/dev/null 2>&1
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 2 >/dev/null 2>&1
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 3 >/dev/null 2>&1
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 4 >/dev/null 2>&1
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 5 >/dev/null 2>&1
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 6 >/dev/null 2>&1
+10 09,10,12,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-tag-day/get-ad-tag-day-data 7 >/dev/null 2>&1
+
+#城市
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 1 >/dev/null 2>&1
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 2 >/dev/null 2>&1
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 3 >/dev/null 2>&1
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 4 >/dev/null 2>&1
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 5 >/dev/null 2>&1
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 6 >/dev/null 2>&1
+09 09,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-area-day/get-ad-area-day-data 7 >/dev/null 2>&1
+
+#省份
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 1 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 2 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 3 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 4 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 5 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 6 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 7 >/dev/null 2>&1
+08 09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-province-day/get-ad-province-day-data 8 >/dev/null 2>&1
+
+#投放位置
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 1 >/dev/null 2>&1
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 2 >/dev/null 2>&1
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 3 >/dev/null 2>&1
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 4 >/dev/null 2>&1
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 5 >/dev/null 2>&1
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 6 >/dev/null 2>&1
+07 07,09,10,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-in-day/get-adin-day 7 >/dev/null 2>&1
+
+#同步AdInfo表
+05 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-info/save-ad-info >/dev/null 2>&1
+
+#获取创意分日视频信息数据
+10,20,30,40,50 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 1 >/dev/null 2>&1
+11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 2 >/dev/null 2>&1
+12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 3 >/dev/null 2>&1
+13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 4 >/dev/null 2>&1
+14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 5 >/dev/null 2>&1
+15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 6 >/dev/null 2>&1
+16,26,36,46,56 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 7 >/dev/null 2>&1
+17,27,37,47,57 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 8 >/dev/null 2>&1
+18,28,38,48,58 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 9 >/dev/null 2>&1
+19,29,39,49,59 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/save-creative-info 10 >/dev/null 2>&1
+
+#刷新账户预算
+10 * * * * /usr/sbin/php /data/api/MdkAdmin/yii budget/get-ad-budget >/dev/null 2>&1
+
+#刷新创意信息
+00,10,20,30,40,50 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 1 >/dev/null 2>&1
+01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 2 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 3 >/dev/null 2>&1
+03,13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 4 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 5 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 6 >/dev/null 2>&1
+06,16,26,36,46,56 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative/refresh-creative 7 >/dev/null 2>&1
+
+#获取创意投放日数据
+#日数据每页跑100个账号 默认跑当天，8-9点跑前一天数据
+08,38 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 1 >/dev/null 2>&1
+09,39 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 2 >/dev/null 2>&1
+10,40 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 3 >/dev/null 2>&1
+11,41 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 4 >/dev/null 2>&1
+12,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 5 >/dev/null 2>&1
+
+13,43 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 6 >/dev/null 2>&1
+14,44 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 7 >/dev/null 2>&1
+15,45 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 8 >/dev/null 2>&1
+16,46 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 9 >/dev/null 2>&1
+17,47 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-day/get-creative-day 10 >/dev/null 2>&1
+
+#获取创意投放分时数据
+08,38 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 1 >/dev/null 2>&1
+09,39 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 2 >/dev/null 2>&1
+10,40 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 3 >/dev/null 2>&1
+11,41 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 4 >/dev/null 2>&1
+12,42 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 5 >/dev/null 2>&1
+13,43 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 6 >/dev/null 2>&1
+14,44 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 7 >/dev/null 2>&1
+15,45 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 8 >/dev/null 2>&1
+16,46 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 9 >/dev/null 2>&1
+17,47 * * * * /usr/sbin/php /data/api/MdkAdmin/yii creative-hour/get-creative-hour 10 >/dev/null 2>&1
+
+#视频报表---------
+
+#获取视频智能封面
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-video-url >/dev/null 2>&1
+
+#批处理可能出错的素材信息
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-video-error >/dev/null 2>&1
+
+#获取素材表视频id
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material-day/get-video-id 1 >/dev/null 2>&1
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material-day/get-video-id 2 >/dev/null 2>&1
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material-day/get-video-id 3 >/dev/null 2>&1
+
+#创意表获取素材id
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-mtid 1 >/dev/null 2>&1
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-mtid 2 >/dev/null 2>&1
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-mtid 3 >/dev/null 2>&1
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-mtid 4 >/dev/null 2>&1
+*/5 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-mtid 5 >/dev/null 2>&1
+
+#获取账户视频素材信息
+#每次请求50个账号
+00,10,20,30,40,50 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 1 >/dev/null 2>&1
+01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 2 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 3 >/dev/null 2>&1
+03,13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 4 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 5 >/dev/null 2>&1
+
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 6 >/dev/null 2>&1
+06,16,26,36,46,56 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 7 >/dev/null 2>&1
+07,17,27,37,47,57 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 8 >/dev/null 2>&1
+08,18,28,38,48,58 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 9 >/dev/null 2>&1
+09,19,29,39,49,59 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 10 >/dev/null 2>&1
+
+00,10,20,30,40,50 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 11 >/dev/null 2>&1
+01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 12 >/dev/null 2>&1
+02,12,22,32,42,52 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 13 >/dev/null 2>&1
+03,13,23,33,43,53 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 14 >/dev/null 2>&1
+04,14,24,34,44,54 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 15 >/dev/null 2>&1
+
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 16 >/dev/null 2>&1
+06,16,26,36,46,56 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 17 >/dev/null 2>&1
+07,17,27,37,47,57 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 18 >/dev/null 2>&1
+08,18,28,38,48,58 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 19 >/dev/null 2>&1
+09,19,29,39,49,59 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material/get-ad-material-data 20 >/dev/null 2>&1
+
+
+#获取账户视频素材日数据
+10 07,08,09,10,13,15 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-material-day/get-ad-material-day-data >/dev/null 2>&1
+
+#----------------------------------2021/1/26
+#首页核心数据  数据实时从mysql读取
+#01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-home-cost 1 >/dev/null 2>&1
+#01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-home-cost 2 >/dev/null 2>&1
+#01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-home-cost 3 >/dev/null 2>&1
+#01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-home-cost 4 >/dev/null 2>&1
+#01,11,21,31,41,51 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-home-cost 5 >/dev/null 2>&1
+#01 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-ad-hours-data 1 >/dev/null 2>&1
+#02 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-ad-hours-data 2 >/dev/null 2>&1
+#03 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-ad-hours-data 3 >/dev/null 2>&1
+#04 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-ad-hours-data 4 >/dev/null 2>&1
+#05 * * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-hours-data/get-ad-hours-data 5 >/dev/null 2>&1
+
+#获取广告主账户的操作日志
+01 01 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-operation-log/get-ad-log-data 1 >/dev/null 2>&1
+11 01 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-operation-log/get-ad-log-data 2 >/dev/null 2>&1
+21 01 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-operation-log/get-ad-log-data 3 >/dev/null 2>&1
+31 01 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-operation-log/get-ad-log-data 4 >/dev/null 2>&1
+41 01 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-operation-log/get-ad-log-data 5 >/dev/null 2>&1
+
+#根据操作日志统计用户操作行为
+01 02,08,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-behavior-log/get-ad-log 1 >/dev/null 2>&1
+02 02,08,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-behavior-log/get-ad-log 2 >/dev/null 2>&1
+03 02,08,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-behavior-log/get-ad-log 3 >/dev/null 2>&1
+04 02,08,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-behavior-log/get-ad-log 4 >/dev/null 2>&1
+05 02,08,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-behavior-log/get-ad-log 5 >/dev/null 2>&1
+06 02,08,10,11,16 * * * /usr/sbin/php /data/api/MdkAdmin/yii ad-behavior-log/get-ad-log 6 >/dev/null 2>&1
+
+
+#检测数据是否执行
+01 05 * * * /usr/sbin/php /data/api/MdkAdmin/yii data-monitor/data-monitor >/dev/null 2>&1
+30 09 * * * /usr/sbin/php /data/api/MdkAdmin/yii data-monitor/audience-data >/dev/null 2>&1   
+
+#飞书时报群
+00 */1 * * * /usr/sbin/php /data/api/MdkAdmin/yii fs-time-msg/send-fs-msg
+
+#飞书昨日时报群
+#30 10 * * * /usr/sbin/php /data/api/MdkAdmin/yii fs-time-msg/send-yest-fs-msg
+
+
+#事故检测 检测计划10分检测一次(初次检查 最近一小时内修改的计划)
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 1 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 2 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 3 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 4 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 5 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 6 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 7 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 8 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 9 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 11 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 12 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 13 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 14 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 15 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 16 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 17 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 18 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 19 >/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan 20 >/dev/null 2>&1
+
+#二次检测  每分钟检测一次(初次检查 最近一小时内修改的计划)
+* * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/check-plan-modify 20 >/dev/null 2>&1
+
+#暂停计划
+* * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-list-notice >/dev/null 2>&1 #消费初次检查的队列 电话通知
+* * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/close-plan-list >/dev/null 2>&1 #二次检查依然错误的计划暂停
+* * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/close-plan >/dev/null 2>&1 #账户暂停，计划依然在跑，暂停队列
+
+#拉取账户下的人群定向包
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 1 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 2 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 3 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 4 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 5 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 6 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 7 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 8 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 9 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 10 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 11 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 12 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 13 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 14 >/dev/null 2>&1
+30 02 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-custom-audience-by-advertiser 15 >/dev/null 2>&1
+
+#拉取账户下的定向包
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 1 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 2 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 3 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 4 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 5 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 6 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 7 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 8 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 9 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 10 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 11 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 12 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 13 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 14 >/dev/null 2>&1
+30 03 * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/get-audience-package 15 >/dev/null 2>&1
+
+#每10分钟把未配置规则包并且不在名单的账户 暂停
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/suspend-plan 1>/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/suspend-plan 2>/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/suspend-plan 3>/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/suspend-plan 4>/dev/null 2>&1
+05,15,25,35,45,55 * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/suspend-plan 5>/dev/null 2>&1
+
+#每分钟更新错误的计划
+* * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/refresh-plan >/dev/null 2>&1
+
+#电话通知
+* * * * * /usr/sbin/php /data/api/MdkAdmin/yii accident/refresh-plan >/dev/null 2>&1
+
+#时报生成图片
+00 10,12,14,16,18,20,22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/zybss >/dev/null 2>&1
+00 10,13,16,18,21 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/xdfzx >/dev/null 2>&1
+00 10,12,14,16,18,20,22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/jyxtch >/dev/null 2>&1
+00 10,14,18 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/msb >/dev/null 2>&1
+00 10,12,14,16,18,20,22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/jyxtsws >/dev/null 2>&1
+00 10,12,17,20,22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/jyxtzk >/dev/null 2>&1
+00 08,10,12,14,16,18,20,22,00 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/bbszxxl >/dev/null 2>&1
+00 07,09,11,13,15,17,19,21,23 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/zybskcjb >/dev/null 2>&1
+00 07,09,11,13,15,17,19,21,23 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/zybskcjbdy >/dev/null 2>&1
+
+00 10-22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/wmsxyqndy >/dev/null 2>&1
+00 10-22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/wmsxyqntt >/dev/null 2>&1
+00 10-22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/wmsxyqncsj >/dev/null 2>&1
+00 10-22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/wmsxyjw >/dev/null 2>&1
+00 10,12,14,16,18,20,22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/wmsxyzl >/dev/null 2>&1
+00 10,12,14,16,18,20,22 * * * /usr/bin/curl http://api.mdkbj.com/data/pic-link/wmsxywm >/dev/null 2>&1

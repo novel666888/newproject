@@ -1,0 +1,31 @@
+http://47.94.95.89:8088/users/sign_in    登录地址  
+
+
+  用户名 ： Mdk_huohq    Mdk_ 固定标识+ 姓 全拼 + 名字首字母 
+
+  密  码 ： 初始密码和账号一样，请大家第一次登录手动修改
+
+
+
+Administrator / MdkAdmin  开发环境
+
+Administrator / MdkTestAdmin  测试环境
+
+Administrator / MdkProdAdmin  正式环境
+ 
+
+第一次clone 需要在git服务器上传自己电脑的密钥 
+
+  密钥生成方式 
+
+	1. 打开git bash
+        2. 输入 ssh-keygen -t rsa ，一路回车即可 
+        3. 查看C:\Users\用户\.ssh\目录下 是否有 id_rsa.pub 文件
+        4. 记事本打开id_rsa.pub文件复制其内容，粘贴至git服务器即可
+
+
+http://172.17.43.72:8088/root/MdkAdmin.git  注意 ：git仓库地址  要替换公网ip方可使用，如下
+
+
+http://47.94.95.89:8088/root/MdkAdmin.git
+
