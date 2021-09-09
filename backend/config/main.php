@@ -13,49 +13,9 @@ return [
         'user' => [
             'class' => 'backend\modules\user\Module',
         ],
-        'accounts' => [
-            'class' => 'backend\modules\accounts\Module',
-        ],
-        'approve' => [
-            'class' => 'backend\modules\approve\Module',
-        ],
-        'basic' => [
-            'class' => 'backend\modules\basic\Module',
-        ],
-        'data' => [
-            'class' => 'backend\modules\data\Module',
-        ],
-        'cost' => [
-            'class' => 'backend\modules\cost\Module',
-        ],
-        'tool' => [
-            'class' => 'backend\modules\tool\Module',
-        ],
-        'mdkweb' => [
-            'class' => 'backend\modules\mdkweb\Module',
-        ],
-        'video' => [
-             'class' => 'backend\modules\video\Module',
-        ],
-        'external' => [
-            'class' => 'backend\modules\external\Module',
-        ],
-        'homepage' => [
-            'class' => 'backend\modules\homepage\Module',
-        ],
-        'accident' => [
-            'class' => 'backend\modules\accident\Module',
-        ],
-        'demand' => [
-            'class' => 'backend\modules\demand\Module',
-        ],
-        'actor' => [
-            'class' => 'backend\modules\actor\Module',
-        ],
-        'check' => [
-            'class' => 'backend\modules\check\Module',
-        ],
-
+        'weixin' => [
+            'class' => 'backend\modules\weixin\Module',
+        ]
     ],
     'components' => [
         'request' => [

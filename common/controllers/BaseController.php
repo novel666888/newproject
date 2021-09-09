@@ -29,7 +29,7 @@ class BaseController extends Controller
     {
         header('Access-Control-Allow-Origin:*');
         header('Access-Control-Allow-Methods:POST,GET,OPTIONS');
-//        header("Access-Control-Allow-Headers: Origin, X-Requested-With, authorization , Content-Type, Accept, x-file-name");
+//        header("Access-Control-Allow-Headers: Origin, X-Requested-With, weixins , Content-Type, Accept, x-file-name");
         header("Access-Control-Allow-Headers:*");
         Yii::info(Request::input(), 'requestInfo');
         if (Yii::$app->getRequest()->isOptions) {
@@ -38,23 +38,8 @@ class BaseController extends Controller
         parent::init();
         //验证请求签名
 //        $this->checkEncryptParam(Common::checkUrlWhiteList('whiteList'));
-        //验证请求操作权限
-//        $this->authAction(Common::checkUrlWhiteList('whiteList'));
         //验证登陆信息
-        $this->checkToken(Common::checkUrlWhiteList('whiteList'));
-        //检查是否修改密码
-//        $this->checkPassword();
-    }
-
-    public function checkPassword(){
-        $user = Users::find()->where(['id' => $this->userInfo['id']])->asArray()->one();
-        $origin_pass = md5('kpd'.md5(md5($user['phone'])).$user['slat']);
-        $request = $this->getRequest();
-        $newPass = $request->post('newPass');
-        if ($origin_pass == $user['password'] && empty($newPass)){
-            exit($this->jsonError("请修改密码！",[],Constant::WEB_MODIFY_PASSWORD));
-        }
-        return true;
+//        $this->checkToken(Common::checkUrlWhiteList('whiteList'));
     }
 
     public function checkToken($check_login = true)
@@ -62,9 +47,8 @@ class BaseController extends Controller
         try {
             if ($check_login) {
                 $header = \Yii::$app->request->headers->toArray();
-                if (empty($header['authorization'][0])) {
+                if (empty($header['weixins'][0])) {
                      exit($this->jsonError("缺少authorization参数",[],10001));
-//                    throw new UserException(\Yii::t($this->i18nCategory, ERROR_CODE_TOKEN_NULL), ERROR_CODE_TOKEN_NULL);
                 }
             }
 
@@ -361,10 +345,10 @@ class BaseController extends Controller
                 return true;
             }
             $header = \Yii::$app->request->headers->toArray();
-            if(!isset($header['authorization'][0])){
+            if(!isset($header['weixins'][0])){
                 return true;
             }else{
-                $sign = trim($header['authorization'][0]);
+                $sign = trim($header['weixins'][0]);
             }
             if(empty($sign)){
                 return true;

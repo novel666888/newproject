@@ -32,7 +32,8 @@
         "overtrue/pinyin": "dev-master",
         "alibabacloud/client": "dev-master",
         "yiisoft/yii2-mongodb": "dev-master",
-        "symfony/browser-kit": ">=2.7 <=4.2.4"
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "wechatpay/wechatpay": "dev-main"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

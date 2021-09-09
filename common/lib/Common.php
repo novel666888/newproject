@@ -194,50 +194,6 @@ class Common{
         error_log($message, 3, $logFile);
     }
 
-    
-    /*
-     * 操作日志
-     */
-    public static function adminLogs($params, $response, $mark)
-    {
-        $module = \Yii::$app->controller->module->id;
-        $root_path = \Yii::getAlias('@mdklog');
-        $module_path = $root_path .'/'. $module;
-        if (!file_exists($module_path)){
-            mkdir($module_path, 0777);
-        }
-        $logFile = $module_path .'/'. $mark .'_'. date("Ymd").'.log';
-        $params = is_array($params) ? json_encode($params, 256) : $params;
-        $response = is_array($response) ? json_encode($response, 256) : $response;
-        $message = "[" . (new \DateTime())->format('Y-m-d H:i:s') . "][params:" . $params . "][response:" . $response . "]\n";
-        error_log($message, 3, $logFile);
-    }
-    /**
-     * 根据部门或者用户获取下级所有用户ids
-     * author: lijin
-     * @param $user_id
-     * @param $params
-     * @return array
-     * @throws \Exception
-     */
-    public static function get_user_ids($user_id, $params){
-        $user = new Users();
-        $user_info = $user->getUserInfoById($user_id, 0);//取当前用户所有下级成员
-        Common::adminLog(['user_id' => $user_id], $user_info['authUid'], 'get-organize-user');
-        $departmentId = !empty($params['groupId']) ? $params['groupId'] : (!empty($params['teamId']) ? $params['teamId'] : (!empty($params['departmentId']) ? $params['departmentId'] : ''));
-        if (empty($departmentId)){
-            $user_ids = $user_info['authUid'];
-        }elseif (!empty($departmentId) && empty($params['userId'])){
-            $organize = new Organize();
-            $son_organize = $organize->getOrganizeNameById($departmentId,2);//取组织架构所有下级组织架构
-            $son_user = $user->getUserInfoByOrganizeId($son_organize['organizeIds'][0],1);//取所有用户
-            $user_ids = array_column($son_user, 'id');
-        }else{
-            $user_ids = [$params['userId']];
-        }
-        return ['user_ids' => $user_ids, 'role_id' => $user_info['role_id'], 'department' => $departmentId];
-    }
-
     /**
      * 二维数组根据字段去重
      * author: lijin
