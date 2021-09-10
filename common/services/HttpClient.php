@@ -96,7 +96,7 @@ class HttpClient extends Component
      * @throws InvalidConfigException
      * @throws \yii\httpclient\Exception
      */
-    public function get($methodPath, array $data=[], $responseType, $token, $format = Client::FORMAT_URLENCODED,$headers=[])
+    public function get($methodPath, array $data=[], $responseType, $token, $format = Client::FORMAT_URLENCODED, $headers=[])
     {
         $methodPath = ltrim($methodPath,'/');
         if(empty($headers)){
