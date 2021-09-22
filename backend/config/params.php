@@ -16,13 +16,4 @@ return [
     'whiteList' => [ //token验证白名单
 
     ],
-
-    'wxConfig' => [
-        'appId' => '',
-        'appSecret' => '',
-        'mchId' => '',
-        'serialNo' => '',
-        'notifyUrl' => '',
-        'prepayOrderUrl' => 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi',
-    ]
 ];

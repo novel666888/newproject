@@ -5,22 +5,15 @@
  * Date: 2021/9/10
  * Time: 15:16
  */
-namespace backend\logic;
+namespace frontend\logic;
 
 use common\lib\Common;
 use WeChatPay\Crypto\Rsa;
-use WeChatPay\Util\PemUtil;
 use yii\httpclient\Client;
 
 class PayLogic{
 
-    private $mch_private_key = '';
-    private $mch_id = '';
     private $method = "POST";
-    private $url = "https://api.mch.weixin.qq.com/v3/certificates";
-    private $curl_timeout = 10;
-    private $serial_no = '';
-
     /**
      * 支付
      * author: lijin
@@ -30,11 +23,12 @@ class PayLogic{
      * @throws \yii\httpclient\Exception
      */
     public function payOrder($order_id){
-        $order_info = getOrder($order_id);
-        $user_info = getUser($order_info['user_id']);
+//        $order_info = getOrder($order_id);
+//        $user_info = getUser($order_info['user_id']);
         $wxConfig = \Yii::$app->params['wxConfig'];
         //商户私钥，路径 `/path/to/merchant/apiclient_key.pem`
-        $merchantPrivateKeyFilePath = 'file:///path/to/merchant/apiclient_key.pem';// 注意 `file://` 开头协议不能少
+//        $merchantPrivateKeyFilePath = 'file:///path/to/merchant/apiclient_key.pem';// 注意 `file://` 开头协议不能少
+        $merchantPrivateKeyFilePath = 'file:///C:/Users/Admin/.sshC:/Users/Admin/.ssh/id_rsa.pub';// 注意 `file://` 开头协议不能少
         //加载商户私钥
         $merchantPrivateKeyInstance = Rsa::from($merchantPrivateKeyFilePath, Rsa::KEY_TYPE_PRIVATE);
 //        $merchantCertificateSerial = '可以从商户平台直接获取到';// API证书不重置，商户证书序列号就是个常量
@@ -150,27 +144,10 @@ class PayLogic{
     }
 
     /**
-     * 获取证书
+     * author: lijin
+     * @param int $length
+     * @return string
      */
-    public function getCertificates(){
-        //生成V3请求 header认证信息
-        $header = $this->createAuthorization($this->url);
-        $header[] = 'User-Agent : https://zh.wikipedia.org/wiki/User_agent';
-        $data = $this->getXmlCurl($this->url, $this->curl_timeout , $header);
-        return json_decode($data , true);
-    }
-
-    public function regguide( $post ,$serial_no){
-        $url = "https://api.mch.weixin.qq.com/v3/smartguide/guides";
-        $this->setBody( $post );
-        //生成V3请求 header认证信息
-        $header = $this->createAuthorization( $url , 'POST' );
-        //增加平台证书序列号 ， 平台证书序列号方法 getcertificates()
-        $header[] = 'Wechatpay-Serial:' . $serial_no;
-        $data = $this->postXmlCurl(json_encode($post , JSON_UNESCAPED_UNICODE) ,  $url  , 30 , $header );
-        return json_decode($data , true);
-    }
-
     public function createNoncestr($length = 32){
         $chars = "abcdefghijklmnpqrstuvwxyz123456789";
         $str = "";

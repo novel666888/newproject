@@ -5,7 +5,7 @@
  * Date: 2021/9/2
  * Time: 15:13
  */
-namespace backend\logic;
+namespace frontend\logic;
 
 class AuthLogic{
 

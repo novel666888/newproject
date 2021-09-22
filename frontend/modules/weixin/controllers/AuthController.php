@@ -5,9 +5,9 @@
  * Date: 2021/9/2
  * Time: 10:35
  */
-namespace backend\modules\weixin\controllers;
+namespace frontend\modules\weixin\controllers;
 
-use backend\logic\AuthLogic;
+use frontend\logic\AuthLogic;
 use common\controllers\BaseController;
 
 class AuthController extends BaseController{

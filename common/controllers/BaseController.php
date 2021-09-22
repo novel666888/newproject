@@ -21,7 +21,7 @@ use yii\web\Response;
 class BaseController extends Controller
 {
     private $i18nCategory = 'boss_auth';
-    public $userInfo = ['id' => '273', 'identity' => '', 'phone' => '', ];
+    public $userInfo = ['id' => '', 'identity' => '', 'phone' => '', ];
     public $tokenInfo = null;
     public $enableCsrfValidation = false;
     
@@ -37,9 +37,9 @@ class BaseController extends Controller
         }
         parent::init();
         //验证请求签名
-//        $this->checkEncryptParam(Common::checkUrlWhiteList('whiteList'));
+        $this->checkEncryptParam(Common::checkUrlWhiteList('whiteList'));
         //验证登陆信息
-//        $this->checkToken(Common::checkUrlWhiteList('whiteList'));
+        $this->checkToken(Common::checkUrlWhiteList('whiteList'));
     }
 
     public function checkToken($check_login = true)
@@ -47,7 +47,7 @@ class BaseController extends Controller
         try {
             if ($check_login) {
                 $header = \Yii::$app->request->headers->toArray();
-                if (empty($header['weixins'][0])) {
+                if (empty($header['authorization'][0])) {
                      exit($this->jsonError("缺少authorization参数",[],10001));
                 }
             }

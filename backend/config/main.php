@@ -12,9 +12,6 @@ return [
     'modules' => [//模块配置
         'user' => [
             'class' => 'backend\modules\user\Module',
-        ],
-        'weixin' => [
-            'class' => 'backend\modules\weixin\Module',
         ]
     ],
     'components' => [
