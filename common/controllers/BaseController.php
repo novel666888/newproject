@@ -3,90 +3,36 @@
 namespace common\controllers;
 
 use common\BizResult;
-use common\lib\Common;
 use common\lib\Constant;
+use common\lib\Request;
 use common\models\Decrypt;
-use common\models\InterfaceService;
-use common\models\Role;
 use common\models\Users;
 use common\models\ValidModel;
 use Yii;
-use yii\base\UserException;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
-use common\services\Request;
 use Overtrue\Pinyin;
 use yii\web\Response;
 
 class BaseController extends Controller
 {
-    private $i18nCategory = 'boss_auth';
-    public $userInfo = ['id' => '', 'identity' => '', 'phone' => '', ];
-    public $tokenInfo = null;
     public $enableCsrfValidation = false;
-    
+
     public function init()
     {
         header('Access-Control-Allow-Origin:*');
         header('Access-Control-Allow-Methods:POST,GET,OPTIONS');
-//        header("Access-Control-Allow-Headers: Origin, X-Requested-With, weixins , Content-Type, Accept, x-file-name");
-        header("Access-Control-Allow-Headers:*");
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, weixins , Content-Type, Accept, x-file-name");
+//        header("Access-Control-Allow-Headers:*");
         Yii::info(Request::input(), 'requestInfo');
         if (Yii::$app->getRequest()->isOptions) {
             exit;
         }
         parent::init();
-        //验证请求签名
-        $this->checkEncryptParam(Common::checkUrlWhiteList('whiteList'));
-        //验证登陆信息
-        $this->checkToken(Common::checkUrlWhiteList('whiteList'));
-    }
-
-    public function checkToken($check_login = true)
-    {
-        try {
-            if ($check_login) {
-                $header = \Yii::$app->request->headers->toArray();
-                if (empty($header['authorization'][0])) {
-                     exit($this->jsonError("缺少authorization参数",[],10001));
-                }
-            }
-
-            $tokenInfo = Decrypt::bossGetTokenInfo();
-            if ($tokenInfo) {
-                $this->tokenInfo = $tokenInfo;
-                if (isset($this->tokenInfo->sub) && !empty($this->tokenInfo->sub)) {
-                    $info = explode("_", $this->tokenInfo->sub);
-                    $this->userInfo['identity'] = isset($info[0]) ? $info[0] : '';
-                    $this->userInfo['phone'] = isset($info[1]) ? $info[1] : '';
-                    $this->userInfo['id'] = isset($info[2]) ? $info[2] : '';
-                    Yii::info($this->userInfo, 'loginInfo');
-                }
-            }
-
-            if ($check_login) {
-                if (empty($this->userInfo['id'])) {
-                    exit($this->jsonError("登录过期，请重新登录！",[],Constant::WEB_ERROR_TOKEN));
-                //    throw new UserException(\Yii::t($this->i18nCategory, ERROR_CODE_TOKEN_ERROR), ERROR_CODE_TOKEN_ERROR);
-                }
-            }
-        } catch (UserException $e) {
-            if (in_array($e->getCode(), [Constant::ERROR_CODE_TOKEN_NULL, Constant::ERROR_CODE_TOKEN_NULL])) {
-                $data['code'] = $e->getCode();
-                $data['message'] = $e->getMessage();
-                $data['data'] = [];
-                echo json_encode($data, 256);
-                Yii::info(['token' => $this->tokenInfo, 'data' => $data], 'loginInfo');
-                exit;
-            } else {
-                throw $e;
-            }
-        }
     }
 
     /**
      * 开启事务
-     *
      * @return \yii\db\Transaction
      * @throws \yii\db\Exception
      */
@@ -94,7 +40,6 @@ class BaseController extends Controller
     public function beginTransaction()
     {
         $trans = Yii::$app->db->beginTransaction();
-        //\Yii::$app->getDb()->createCommand("SET drds_transaction_policy = 'XA'")->execute();
         return $trans;
     }
 
@@ -370,51 +315,6 @@ class BaseController extends Controller
         }
     }
 
-    public function checkEncryptParam($isAuth)
-    {
-        if(!$isAuth)
-            return ;
-
-        $bossCheck = ArrayHelper::getValue(\Yii::$app->params,'bossSignCheckSwitch');
-        if($bossCheck == 1 && Common::checkUrlWhiteList('signCheckWhite')){
-            $result = \Yii::$app->request->post();
-            \Yii::info($result, 'getData');
-
-            if(!isset($result['sign'])){
-                echo json_encode(['code' => 403, 'message' => '签名参数验证失败!', 'data' => $result]); exit();
-            }
-
-            $result = array_filter($result, function($v) {
-                if (!is_array($v)) {
-                    return true;
-                }
-            });
-
-            \Yii::info($result, 'result');
-            $sign = trim($result['sign']);
-            $dateline = trim($result['dateline']);
-            if((time()-$dateline)>120){
-                 exit($this->jsonError("签名已过期",[],Constant::WEB_SIGN_TIMEOUT));
-            }
-            unset($result['sign']);
-            unset($result['dateline']);
-
-            ksort($result);
-            $param['dateline'] = $dateline;
-            $param['secretKey'] = ArrayHelper::getValue(\Yii::$app->params,'secretKey');
-            \Yii::info($result, 'paramresult');
-
-            $param = http_build_query($param, null,'&', PHP_QUERY_RFC3986);
-
-            \Yii::info($param, 'param');
-            $checkSign = md5($param);
-            \Yii::info($checkSign, 'checkSign');
-            if( $sign != $checkSign ){
-                echo json_encode(['code' => 403, 'message' => '签名参数验证失败!', 'data' => [$sign=>$checkSign]]); exit();
-            }
-        }
-    }
-
     /**
      *   成功操作
      */
@@ -494,40 +394,5 @@ class BaseController extends Controller
         }
         exit($this->jsonError("登录已过期，请重新登录!",[],Constant::WEB_ERROR_TOKEN));
     }
-    /**
 
-    /**
-     * 验证权限
-     */
-    public function authAction($isAuth,$pathInfo=''){
-
-        if(!$isAuth)
-            return ;
-
-        $user = $this->getUserInfoByToken();
-        if(!is_array($user)){
-            return $user;
-        }
-
-        $pathInfo = $pathInfo=='' ? Yii::$app->getRequest()->pathInfo : $pathInfo;
-        $status = (new InterfaceService())->validateAuth($pathInfo);
-
-        if($status===false){
-            exit($this->jsonError("操作不存在"));
-        }
-        //白名单的接口
-        if($status===true){
-            return $status;
-        }
-
-        //需要验证的接口地址
-        if(is_numeric($status)){
-            $isAuth = (new Role())->roleAuth($user['role_id'],$status);
-            if($isAuth===false){
-                exit($this->jsonError("无权限操作",[],Constant::WEB_ERROR_PERMISSION));
-            }
-            return true;
-        }
-
-    }
 }

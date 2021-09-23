@@ -1,66 +1,42 @@
 <?php
 if (YII_ENV_PROD) {
     $__dbConfig = [
-        'host' => YII_CONSOLE ? '172.17.43.65' : '172.17.43.67',
-        'name' => 'mdk',
-        'user' => 'mdk-prod',
-        'pass' => 'Mdk@prod',
-        'port' => '3306'
+        'host' => '',
+        'name' => '',
+        'user' => '',
+        'pass' => '',
+        'port' => ''
     ];
     $_redisConfig = [
-        'host' => '172.17.43.69',
-        'port' => '63790',
-        'password' => 'nw#[7Z:/0Ju$'
-    ];
-    $_mongoDb = [
-        'host' => '172.17.43.69',
-        'database' => 'mdk_prod',
-        'port' => '27017',
-        'user' => 'mdk-prod',
-        'pass' => 'Mdk@2020#'
+        'host' => '',
+        'port' => '',
+        'password' => ''
     ];
 } elseif (YII_ENV_TEST){
     $__dbConfig = [
-        'host' => '172.17.43.72',
-        'name' => 'mdk_test',
-        'user' => 'mdk-test',
-        'pass' => 'Mdk@test',
-        'port' => '3306'
+        'host' => '',
+        'name' => '',
+        'user' => '',
+        'pass' => '',
+        'port' => ''
     ];
     $_redisConfig = [
-        'host' => '172.17.43.72',
-        'port' => '63790',
-        'password' => '?m3PP2Z#nG!9'
-    ];
-    $_mongoDb = [
-        'host' => '172.17.43.72',
-        'database' => 'mdk_test',
-        'port' => '27017',
-        'user' => 'mdk-test',
-        'pass' => 'Mdk@2020#'
+        'host' => '',
+        'port' => '',
+        'password' => ''
     ];
 }else{
-    /**
-     *  服务器配置
-     */
     $__dbConfig = [
-        'host' => '172.17.43.71',
-        'name' => 'mdk_dev',
-        'user' => 'mdk-dev',
-        'pass' => 'Mdk@dev',
-        'port' => '3306'
+        'host' => '',
+        'name' => '',
+        'user' => '',
+        'pass' => '',
+        'port' => ''
     ];
     $_redisConfig = [
-        'host' => '123.56.99.75',
-        'port' => '63790',
-        'password' => 'x29jIa!jqfB7',
-    ];
-    $_mongoDb = [
-        'host' => '172.17.43.71',
-        'database' => 'mdk_dev',
-        'port' => '27017',
-        'user' => 'mdk-dev',
-        'pass' => 'Mdk@2020#'
+        'host' => '',
+        'port' => '',
+        'password' => '',
     ];
 }
 
@@ -83,14 +59,6 @@ return [
 //                    'basePath'=>'@message'
                 ],
             ],
-        ],
-        'mongodb' => [
-            'class' => 'yii\mongodb\Connection',
-            "dsn" => 'mongodb://'.$_mongoDb['host'].':'.$_mongoDb['port'].'/'.$_mongoDb['database'],
-            'options' => [
-                "username" => $_mongoDb['user'],
-                "password" => $_mongoDb['pass']
-            ]
         ],
         'db' => [
             'class' => 'yii\db\Connection',

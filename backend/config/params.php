@@ -5,15 +5,15 @@ return [
     'secretKey' => '7g2cf84185d032de45f95q2198a57',
     'jwt-secret' =>'jwt-e8773605ba20edbd6376',
 
-    'permissionWhiteList' => [ //权限白名单
+    'permissionWhiteList' => [ //接口权限白名单
 
     ],
 
-    'signCheckWhite'=>[ //签名验证白名单
+    'signCheckWhite'=>[ //接口签名验证白名单
 
     ],
 
-    'whiteList' => [ //token验证白名单
+    'whiteList' => [ //接口token验证白名单
 
     ],
 ];
