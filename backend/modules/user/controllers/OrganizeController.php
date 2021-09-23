@@ -1,11 +1,9 @@
 <?php
 
 namespace backend\modules\user\controllers;
-use backend\logic\organizeLogic;
 use common\models\Organize;
 use Yii;
 use common\controllers\BaseController;
-use yii\db\Exception;
 
 
 class OrganizeController extends BaseController
