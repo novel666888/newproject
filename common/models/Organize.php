@@ -337,7 +337,7 @@ class Organize extends \yii\db\ActiveRecord
         }
 
         if($type==0){//所属组织架构id
-            $organizeNam="北京麦迪克";
+            $organizeNam="小纸条";
             for($i=2;$i<=5;$i++){
                 $key = "top_".$this->hierarchy[$i]."_name";
                 if(!empty($data[$key])){

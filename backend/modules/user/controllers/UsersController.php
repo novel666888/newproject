@@ -2,13 +2,9 @@
 
 namespace backend\modules\user\controllers;
 
-use backend\logic\AccountLogic;
 use common\models\Action;
 use common\models\Decrypt;
 use common\models\RoleToAction;
-use common\models\UserHomeConfig;
-use common\models\UserPosition;
-use common\services\FlyBookNotice;
 use common\services\traits\ModelTrait;
 use Yii;
 use common\controllers\BaseController;
@@ -17,7 +13,6 @@ use common\models\Role;
 use common\models\Users;
 use yii\captcha\Captcha;
 use yii\captcha\CaptchaAction;
-use yii\data\Pagination;
 
 class UsersController extends BaseController
 {
@@ -318,20 +313,6 @@ class UsersController extends BaseController
     }
 
     /**
-     * 获取老平台token
-     */
-    public function actionGetOldToken(){
-        $userInfo = $this->getUserInfoByToken();
-        $dateLine = time();
-        $sign=substr(md5($userInfo['phone'].$dateLine),3,9);
-        $data = [
-            'phone'=>$userInfo['phone'],
-            't'=>$dateLine,
-            'c'=>$sign
-        ];
-        return $this->jsonSuccess("参数生成成功",$data);
-    }
-    /**
      *  根据用户ID获取用户手机号
      */
     public function actionGetPhoneByUid(){
@@ -345,104 +326,6 @@ class UsersController extends BaseController
             ->asArray()
             ->one();
         return $this->jsonSuccess("ok",$userData);
-    }
-    /**
-     * 获取新平台token
-     */
-    public function actionTokenLogin(){
-        $param =  Yii::$app->request->post();
-        if(!isset($param['phone']) || empty($param['phone'])){
-            return $this->jsonError("参数错误,缺少phone");
-        }
-        if(!isset($param['t']) || empty($param['t'])){
-            return $this->jsonError("参数错误，缺少dateLine");
-        }
-        if(!isset($param['c']) || empty($param['c'])){
-            return $this->jsonError("参数错误，缺少sign");
-        }
-        if((time()-$param['t'])>120){
-            return $this->jsonError("sign效验失败，签名已过期");
-        }
-        $sign =  substr(md5($param['phone'].$param['t']),3,9);
-        if($param['c']!=$sign){
-            return $this->jsonError("c效验失败，签名效验不通过");
-        }
-        $userData = Users::find()
-            ->select("id,username,phone,email,worked,role_id,role_name,organize_id,organize_name,slat")
-            ->where(['phone'=>$param['phone'],'worked'=>1])
-            ->asArray()
-            ->one();
-        if(empty($userData)){
-            return $this->jsonError("用户不存在");
-        }
-        $token = Decrypt::createBossToken($userData['id']);
-        if($token===false){
-            return $this->jsonError("token生成失败!");
-        }
-        $userData['token']=$token;
-        Yii::$app->session['userInfo']=$userData;
-        return $this->jsonSuccess("登录成功！",$userData);
-    }
-
-    /**
-     * 查询用户首页拖拽定位
-     */
-    public function actionGetPosition(){
-        $param = Yii::$app->request->post();
-        if(!isset($param['menu_id']) || !is_numeric($param['menu_id'])){
-            return $this->jsonError("请输入页面ID");
-        }
-        $userId = $this->userInfo['id'];
-        if(!$userId){
-            return $this->jsonError("未找到用户ID");
-        }
-        $where = ['user_id'=>$userId,'action_id'=>$param['menu_id']];
-        $data =  UserPosition::findOne($where);
-        if($data){
-            $data = $data->toArray();
-            $data['content'] = json_decode($data['content'],true);
-            return $this->jsonSuccess("ok",$data);
-        }else{
-            return $this->jsonSuccess("未查询到数据",[]);
-        }
-    }
-
-    /**
-     * 记录
-     */
-    public function actionSavePosition(){
-        $param = Yii::$app->request->post();
-        $userId = $this->userInfo['id'];
-        if(!isset($param['content']) || empty($param['content'])){
-            return $this->jsonError("请输入定位内容");
-        }
-        if(!isset($param['menu_id']) || !is_numeric($param['menu_id'])){
-            return $this->jsonError("请输入页面ID");
-        }
-        $where = ['and'];
-        $where[]=["action_id"=>$param['menu_id']];
-        $where[]=["user_id"=>$userId];
-        $data = UserPosition::find()->where($where)->one();
-        if($data){
-            $data->content = json_encode($param['content']);
-            if($data->save(false)){
-                return $this->jsonSuccess("修改成功");
-            }else{
-                return $this->jsonError("修改失败",$data->errors);
-            }
-        }else{
-           $model = new  UserPosition();
-           $addData = [
-               "user_id"=>$userId,
-               "content"=>json_encode($param['content']),
-               "action_id"=>$param['menu_id']
-           ];
-           if($model->load($addData,'') && $model->save()){
-               return $this->jsonSuccess("添加成功");
-           }else{
-               return $this->jsonError("添加失败",$model->errors);
-           }
-        }
     }
 
     /**
@@ -488,49 +371,6 @@ class UsersController extends BaseController
         $where[]=['pid'=>$param['aid']];
         $data = Action::find()->select("id,name")->where($where)->asArray()->all();
         return $this->jsonSuccess("ok",$data);
-    }
-
-    /**
-     * 设置常用模块
-     */
-    public function actionSetModules(){
-        $param = Yii::$app->request->post();
-        $userInfo = $this->getUserInfoByToken();
-        $model = UserHomeConfig::findOne(['user_id'=>$userInfo['id']]);
-        if(!empty($model)){
-            $model->action_id = json_encode(array_values($param['action_id']));
-            if($model->save(false)){
-                return $this->jsonSuccess("设置成功");
-            }else{
-                return $this->jsonError("设置失败");
-            }
-        }else{
-            $data = [
-                'user_id'=>$userInfo['id'],
-                'action_id'=>json_encode(array_values($param['action_id']))
-            ];
-            $model = new UserHomeConfig();
-            if($model->load($data,'') && $model->save()){
-                return $this->jsonSuccess("设置成功");
-            }else{
-                return $this->jsonError("设置失败");
-            }
-        }
-    }
-
-    /**
-     * 获取常用模块
-     */
-    public function actionGetModules(){
-        $userInfo = $this->getUserInfoByToken();
-        $model = UserHomeConfig::findOne(['user_id'=>$userInfo['id']]);
-        if(!empty($model)){
-            $data = $model->toArray();
-            $data['action_id'] = json_decode($data['action_id'],true);
-            return $this->jsonSuccess("ok",$data['action_id']);
-        }else{
-            return $this->jsonSuccess("ok",[]);
-        }
     }
 
     /**
