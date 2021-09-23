@@ -46,11 +46,6 @@ class UsersController extends BaseController
     {
         $userInfo = $this->getUserInfoByToken();
         $menu['menu'] = (new Role())->getMenuByRid($userInfo['role_id']);
-        $menu['video_role'] = 0;
-        if (in_array($userInfo['role_id'], VIDEO_RADAR_PART)){
-            $menu['video_role'] = 1;
-        }
-        $this->userLog($userInfo['id']);
         return $this->jsonSuccess("获取成功！",$menu);
     }
 
@@ -193,20 +188,6 @@ class UsersController extends BaseController
         if(!isset($param['email']) || empty($param['email'])){
             return $this->jsonError("请填写用户邮箱！",[],400);
         }
-        $flyData = (new FlyBookNotice())->getFlyUidByPhone($param['phone']);
-        if(empty($flyData)){
-            return $this->jsonError("系统异常！");
-        }
-
-        if($flyData['code']==404){  // 公司外部人员不验证 飞书
-            $param['fly_user_id']='';
-            $param['fly_open_id']='';
-            //return $this->jsonError($flyData['msg'],[],400);//不是飞书绑定的用户手机号不可以进行创建
-        }else{
-            $param['fly_user_id']=$flyData['data']['user_id'];
-            $param['fly_open_id']=$flyData['data']['open_id'];
-        }
-
         $salt = substr(md5(uniqid()),2,8);
         $param['slat']=$salt;
         $md5Phone = md5(md5($param['phone']));
@@ -258,20 +239,6 @@ class UsersController extends BaseController
         if(isset($param['role_id']) && !empty($param['role_id'])){
             $param['role_name'] = (new Role())->getRoleNameById($param['role_id']); // 冗余角色名称
         }
-        if(isset($param['phone']) && !empty($param['phone'])){
-            $flyData = (new FlyBookNotice())->getFlyUidByPhone($param['phone']);
-            if(empty($flyData)){
-                return $this->jsonError("系统异常！");
-            }
-            if($flyData['code']==404){
-                $param['fly_user_id']='';
-                $param['fly_open_id']='';
-                //return $this->jsonError($flyData['msg'],[],400);
-            }else{
-                $param['fly_user_id']=$flyData['data']['user_id'];
-                $param['fly_open_id']=$flyData['data']['open_id'];
-            }
-        }
         if(isset($param['organize_id']) && !empty($param['organize_id'])){
             $param['organize_name'] = (new Organize())->getOrganizeNameById($param['organize_id'],0); // 冗余所在组织架构名称
             $parendData =  (new Organize())->getOrganizeNameById($param['organize_id'],-1); // 冗余所属组织架构名称
@@ -283,17 +250,7 @@ class UsersController extends BaseController
         if(!$data->validate()){
             return $this->jsonError($this->errorInfo($data->getFirstErrors()));
         }
-
         if($data->save()){
-            if($originalOrganizeId != $param['organize_id']){
-                 $params = ['optimizer_id'=>$saveUid];
-                 $saveData = Organize::find()
-                     ->select("top_one_id,top_one_name,top_two_id,top_two_name,top_three_id,top_three_name,top_four_id,top_four_name")
-                     ->where(['id'=>$param['organize_id']])
-                     ->asArray()
-                     ->one();
-                 AccountLogic::SaveAdinfo($params,$saveData);
-            }
             return $this->jsonSuccess("修改成功");
         }else{
             return $this->jsonError("修改失败",$this->errorInfo($data->getFirstErrors()));

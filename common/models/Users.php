@@ -24,11 +24,7 @@ use Yii;
  * @property string|null $departure_time 离职时间
  * @property string|null $update_time 修改时间
  * @property int|null $last_login_time 最后登录时间
- * @property int|null $cooperation_organize_id 协作者某组织架构ID
- * @property string|null $cooperation_organize_name 协作者某组织架构name
  * @property string|null $slat 用于加密密码
- * @property string|null $fly_user_id 飞书用户ID
- * @property string|null $fly_open_id 飞书openid
  */
 class Users extends \yii\db\ActiveRecord
 {
@@ -48,10 +44,10 @@ class Users extends \yii\db\ActiveRecord
         return [
             [['username','password', 'role_id','phone','slat'], 'required'],
             [['sex','worked'], 'default',"value"=>1],
-            [['phone','email','fly_user_id','fly_open_id'], 'unique'],
-            [['sex', 'organize_id', 'worked', 'role_id', 'last_login_time', 'cooperation_organize_id','parent_organize_id'], 'integer'],
+            [['phone','email'], 'unique'],
+            [['sex', 'organize_id', 'worked', 'role_id', 'last_login_time', 'parent_organize_id'], 'integer'],
             [['create_time', 'departure_time', 'update_time'], 'safe'],
-            [['username', 'token', 'role_name', 'organize_name', 'cooperation_organize_name','parent_organize_name'], 'string', 'max' => 255],
+            [['username', 'token', 'role_name', 'organize_name', 'parent_organize_name'], 'string', 'max' => 255],
             [['password'], 'string', 'max' => 32],
             [['email'], 'string', 'max' => 50],
             [['phone'], 'string', 'max' => 13],
@@ -82,11 +78,7 @@ class Users extends \yii\db\ActiveRecord
             'departure_time' => '离职时间',
             'update_time' => '最后更新时间',
             'last_login_time' => '最后登录时间',
-            'cooperation_organize_id' => '协作者组织架构ID',
-            'cooperation_organize_name' => '协作者组织架构名称',
             'slat'=>'密码加密',
-            'fly_user_id'=>'飞书用户ID',
-            'fly_open_id'=>'飞书openid',
         ];
     }
 

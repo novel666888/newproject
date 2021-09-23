@@ -383,16 +383,4 @@ class BaseController extends Controller
         exit($this->jsonError("登录已过期，请重新登录!",[],Constant::WEB_ERROR_TOKEN));
     }
 
-    public function getUidByToken(){
-        $token = Decrypt::bossGetTokenInfo();
-        if($token){
-            $token = (array)$token;
-            $userInfo = (new Users())->getUserInfoById($token['id']);
-            if(empty($userInfo))
-                return $userInfo;
-            return $userInfo['id'];
-        }
-        exit($this->jsonError("登录已过期，请重新登录!",[],Constant::WEB_ERROR_TOKEN));
-    }
-
 }

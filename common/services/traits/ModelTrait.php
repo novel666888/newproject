@@ -135,23 +135,6 @@ trait ModelTrait{
         $record = UserLog::find()->where(['user_id' => $user_id, 'ip' => $user->ip, 'date' => $user->date])->count();
         if (!$record){
             $user->save($user);
-            //一天超过三条ip发通知
-            $ip_count = UserLog::find()->where(['user_id' => $user_id, 'date' => $user->date])->count();
-            if ($ip_count > 3){
-                $user_info = Users::find()->alias('a')
-                    ->leftJoin(Organize::tableName(). ' as b', 'a.organize_id = b.id')
-                    ->where(['user_id' => $user_id])->asArray()->one();
-                if (in_array($user_info['top_two_id'], array_merge(OPTIMIZER_PART, [139, 141]))){
-                    $user = new Users();
-                    $user_info = $user->getUserInfoById($user_id);
-                    $target_user = in_array($user_info['parentOrganize']['organizeIds'][1], [373, 149]) ? $user_info['parentOrganize']['organizeIds'][1] : $user_info['parentOrganize']['organizeIds'][2];
-                    if (!empty($target_user)){
-                        $notice_user = Users::find()->select('id')->where(['organize_id' => $target_user])->andWhere(['or', ['like', 'role_name', '总监'], ['like', 'role_name', '经理']])->scalar();
-                        $flyBook = new FlyBookNotice();
-                        $flyBook->sendFlyMsgByUid($notice_user, '多地登录提醒：'.$user_info['username'].'今日已在'.$ip_count.'处进行登录操作');
-                    }
-                }
-            }
         }
         return true;
     }
